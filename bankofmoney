@@ -1,0 +1,79 @@
+// Define a trait for basic account operations
+trait Account {
+    fn deposit(&mut self, amount: f64);
+    fn withdraw(&mut self, amount: f64);
+    fn balance(&self) -> f64;
+}
+
+// Define a struct for a bank account
+struct BankAccount {
+    account_number: u32,
+    holder_name: String,
+    balance: f64,
+}
+
+// Implement the Account trait for the BankAccount struct
+impl Account for BankAccount {
+    fn deposit(&mut self, amount: f64) {
+        self.balance += amount;
+        println!(
+            "Deposited ${:.2} into account {}. New balance: ${:.2}",
+            amount, self.account_number, self.balance
+        );
+    }
+
+    fn withdraw(&mut self, amount: f64) {
+        if self.balance >= amount {
+            self.balance -= amount;
+            println!(
+                "Withdrew ${:.2} from account {}. New balance: ${:.2}",
+                amount, self.account_number, self.balance
+            );
+        } else {
+            println!(
+                "Insufficient funds in account {}. Available balance: ${:.2}",
+                self.account_number, self.balance
+            );
+        }
+    }
+
+    fn balance(&self) -> f64 {
+        self.balance
+    }
+}
+
+fn main() {
+    // Create two bank account instances
+    let mut account1 = BankAccount {
+        account_number: 101,
+        holder_name: "Alice".to_string(),
+        balance: 1000.0,
+    };
+
+    let mut account2 = BankAccount {
+        account_number: 102,
+        holder_name: "Bob".to_string(),
+        balance: 500.0,
+    };
+
+    // Deposit into Alice's account
+    account1.deposit(200.0);
+
+    // Withdraw from Bob's account
+    account2.withdraw(100.0);
+
+    // Check balances
+    println!(
+        "Account {} ({}): Balance = ${:.2}",
+        account1.account_number,
+        account1.holder_name,
+        account1.balance()
+    );
+
+    println!(
+        "Account {} ({}): Balance = ${:.2}",
+        account2.account_number,
+        account2.holder_name,
+        account2.balance()
+    );
+}
